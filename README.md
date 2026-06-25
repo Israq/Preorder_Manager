@@ -1,5 +1,3 @@
-cat > README.md << 'EOF'
-
 # Preorder Manager
 
 A full-stack preorder management application built with Next.js 16, Prisma, and SQLite.
@@ -33,68 +31,81 @@ A full-stack preorder management application built with Next.js 16, Prisma, and 
 
 ### Installation
 
-```bash
-# Clone the repository
 git clone <your-repo-url>
 cd preorder-manager
-
-# Install dependencies
 npm install
-
-# Set up the database and seed data
 npx prisma migrate dev --name init
 npx prisma db seed
-
-# Start the development server
 npm run dev
-```
 
-model Preorder {
-id String @id @default(cuid())
-name String
-products Int @default(1)
-preorderWhen String @default("regardless-of-stock")
-startsAt DateTime
-endsAt DateTime?
-status Boolean @default(true)
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
-}
+Open http://localhost:3000 to view the app.
+
+## Project Structure
 
 preorder-manager/
 ├── prisma/
-│ ├── schema.prisma # Database schema
-│ ├── seed.ts # Sample seed data (8 preorders)
-│ └── migrations/ # Database migration files
+│   ├── schema.prisma
+│   ├── seed.ts
+│   └── migrations/
 ├── src/
-│ ├── app/
-│ │ ├── api/
-│ │ │ └── preorders/
-│ │ │ ├── route.ts # GET (list) & POST (create)
-│ │ │ └── [id]/
-│ │ │ ├── route.ts # PUT (update) & DELETE
-│ │ │ └── status/
-│ │ │ └── route.ts # PATCH (toggle status)
-│ │ ├── preorders/
-│ │ │ ├── page.tsx # List page (table, filters, sort, pagination)
-│ │ │ ├── new/
-│ │ │ │ └── page.tsx # Create preorder form
-│ │ │ └── [id]/
-│ │ │ └── edit/
-│ │ │ └── page.tsx # Edit preorder form (pre-filled)
-│ │ ├── page.tsx # Home page (redirects to /preorders)
-│ │ ├── layout.tsx # Root layout with Inter font + Toaster
-│ │ └── globals.css # Global styles
-│ ├── components/
-│ │ ├── preorder-form.tsx # Shared create/edit form component
-│ │ ├── sort-dropdown.tsx # Sort dropdown (sort by + order)
-│ │ └── ui/ # shadcn/ui components (button, table, switch, etc.)
-│ └── lib/
-│ ├── prisma.ts # Prisma client singleton
-│ └── utils.ts # Utility functions (cn)
-├── prisma.config.ts # Prisma v7 configuration
-├── components.json # shadcn/ui configuration
-├── package.json # Dependencies and scripts
-├── tsconfig.json # TypeScript configuration
-├── tailwind.config.ts # Tailwind CSS configuration
-└── README.md # Project documentation
+│   ├── app/
+│   │   ├── api/preorders/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/
+│   │   │       ├── route.ts
+│   │   │       └── status/route.ts
+│   │   ├── preorders/
+│   │   │   ├── page.tsx
+│   │   │   ├── new/page.tsx
+│   │   │   └── [id]/edit/page.tsx
+│   │   ├── page.tsx
+│   │   ├── layout.tsx
+│   │   └── globals.css
+│   ├── components/
+│   │   ├── preorder-form.tsx
+│   │   ├── sort-dropdown.tsx
+│   │   └── ui/
+│   └── lib/
+│       ├── prisma.ts
+│       └── utils.ts
+├── prisma.config.ts
+├── package.json
+├── tsconfig.json
+└── README.md
+
+## Database Schema
+
+model Preorder {
+  id           String    @id @default(cuid())
+  name         String
+  products     Int       @default(1)
+  preorderWhen String    @default("regardless-of-stock")
+  startsAt     DateTime
+  endsAt       DateTime?
+  status       Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+## API Endpoints
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | /api/preorders | List with filter, sort, pagination |
+| POST | /api/preorders | Create preorder |
+| PUT | /api/preorders/[id] | Update preorder |
+| PATCH | /api/preorders/[id]/status | Toggle status |
+| DELETE | /api/preorders/[id] | Delete preorder |
+
+## Seed Data
+
+| Name | Products | Preorder When | Starts At | Status |
+|------|----------|---------------|-----------|--------|
+| Multi variant 3 | 1 | out-of-stock | Dec 15, 2025 | Inactive |
+| Multi variant 2 | 1 | regardless-of-stock | Dec 15, 2025 | Active |
+| Multi variants 1 | 1 | regardless-of-stock | Dec 15, 2025 | Active |
+| Partial payment | 1 | regardless-of-stock | Aug 17, 2025 | Active |
+| Shipping not sure | 1 | regardless-of-stock | Aug 17, 2025 | Active |
+| Full payment | 1 | regardless-of-stock | Aug 17, 2025 | Active |
+| Coming soon | 1 | regardless-of-stock | Dec 11, 2025 | Active |
+| With ends | 1 | regardless-of-stock | Aug 14, 2025 | Active |
