@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+cat > README.md << 'EOF'
+
+# Preorder Manager
+
+A full-stack preorder management application built with Next.js 16, Prisma, and SQLite.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Database:** SQLite with Prisma ORM
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS + shadcn/ui
+- **Icons:** Lucide React
+- **Notifications:** Sonner
+- **Date Formatting:** date-fns
+
+## Features
+
+- View all preorders with server-side filtering, sorting, and pagination
+- Create new preorders with validation
+- Edit existing preorders (pre-filled form)
+- Toggle preorder status (Active/Inactive)
+- Delete preorders with toast feedback
+- Select all / individual row selection with checkboxes
+- Responsive design
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 22+
+- npm
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone <your-repo-url>
+cd preorder-manager
+
+# Install dependencies
+npm install
+
+# Set up the database and seed data
+npx prisma migrate dev --name init
+npx prisma db seed
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+model Preorder {
+id String @id @default(cuid())
+name String
+products Int @default(1)
+preorderWhen String @default("regardless-of-stock")
+startsAt DateTime
+endsAt DateTime?
+status Boolean @default(true)
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+}
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+preorder-manager/
+├── prisma/
+│ ├── schema.prisma # Database schema
+│ ├── seed.ts # Sample seed data (8 preorders)
+│ └── migrations/ # Database migration files
+├── src/
+│ ├── app/
+│ │ ├── api/
+│ │ │ └── preorders/
+│ │ │ ├── route.ts # GET (list) & POST (create)
+│ │ │ └── [id]/
+│ │ │ ├── route.ts # PUT (update) & DELETE
+│ │ │ └── status/
+│ │ │ └── route.ts # PATCH (toggle status)
+│ │ ├── preorders/
+│ │ │ ├── page.tsx # List page (table, filters, sort, pagination)
+│ │ │ ├── new/
+│ │ │ │ └── page.tsx # Create preorder form
+│ │ │ └── [id]/
+│ │ │ └── edit/
+│ │ │ └── page.tsx # Edit preorder form (pre-filled)
+│ │ ├── page.tsx # Home page (redirects to /preorders)
+│ │ ├── layout.tsx # Root layout with Inter font + Toaster
+│ │ └── globals.css # Global styles
+│ ├── components/
+│ │ ├── preorder-form.tsx # Shared create/edit form component
+│ │ ├── sort-dropdown.tsx # Sort dropdown (sort by + order)
+│ │ └── ui/ # shadcn/ui components (button, table, switch, etc.)
+│ └── lib/
+│ ├── prisma.ts # Prisma client singleton
+│ └── utils.ts # Utility functions (cn)
+├── prisma.config.ts # Prisma v7 configuration
+├── components.json # shadcn/ui configuration
+├── package.json # Dependencies and scripts
+├── tsconfig.json # TypeScript configuration
+├── tailwind.config.ts # Tailwind CSS configuration
+└── README.md # Project documentation
