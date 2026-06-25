@@ -44,37 +44,44 @@ Open http://localhost:3000 to view the app.
 
 preorder-manager/
 ├── prisma/
-│   ├── schema.prisma
-│   ├── seed.ts
-│   └── migrations/
+│ ├── schema.prisma
+│ ├── seed.ts
+│ └── migrations/
 ├── src/
-│   ├── app/
-│   │   ├── api/preorders/
-│   │   │   ├── route.ts
-│   │   │   └── [id]/
-│   │   │       ├── route.ts
-│   │   │       └── status/route.ts
-│   │   ├── preorders/
-│   │   │   ├── page.tsx
-│   │   │   ├── new/page.tsx
-│   │   │   └── [id]/edit/page.tsx
-│   │   ├── page.tsx
-│   │   ├── layout.tsx
-│   │   └── globals.css
-│   ├── components/
-│   │   ├── preorder-form.tsx
-│   │   ├── sort-dropdown.tsx
-│   │   └── ui/
-│   └── lib/
-│       ├── prisma.ts
-│       └── utils.ts
+│ ├── app/
+│ │ ├── api/
+│ │ │ └── preorders/
+│ │ │ ├── route.ts
+│ │ │ └── [id]/
+│ │ │ ├── route.ts
+│ │ │ └── status/
+│ │ │ └── route.ts
+│ │ ├── preorders/
+│ │ │ ├── page.tsx
+│ │ │ ├── new/
+│ │ │ │ └── page.tsx
+│ │ │ └── [id]/
+│ │ │ └── edit/
+│ │ │ └── page.tsx
+│ │ ├── page.tsx
+│ │ ├── layout.tsx
+│ │ └── globals.css
+│ ├── components/
+│ │ ├── preorder-form.tsx
+│ │ ├── sort-dropdown.tsx
+│ │ └── ui/
+│ └── lib/
+│ ├── prisma.ts
+│ └── utils.ts
 ├── prisma.config.ts
+├── components.json
 ├── package.json
 ├── tsconfig.json
 └── README.md
 
 ## Database Schema
 
+```prisma
 model Preorder {
   id           String    @id @default(cuid())
   name         String
@@ -86,26 +93,4 @@ model Preorder {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }
-
-## API Endpoints
-
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | /api/preorders | List with filter, sort, pagination |
-| POST | /api/preorders | Create preorder |
-| PUT | /api/preorders/[id] | Update preorder |
-| PATCH | /api/preorders/[id]/status | Toggle status |
-| DELETE | /api/preorders/[id] | Delete preorder |
-
-## Seed Data
-
-| Name | Products | Preorder When | Starts At | Status |
-|------|----------|---------------|-----------|--------|
-| Multi variant 3 | 1 | out-of-stock | Dec 15, 2025 | Inactive |
-| Multi variant 2 | 1 | regardless-of-stock | Dec 15, 2025 | Active |
-| Multi variants 1 | 1 | regardless-of-stock | Dec 15, 2025 | Active |
-| Partial payment | 1 | regardless-of-stock | Aug 17, 2025 | Active |
-| Shipping not sure | 1 | regardless-of-stock | Aug 17, 2025 | Active |
-| Full payment | 1 | regardless-of-stock | Aug 17, 2025 | Active |
-| Coming soon | 1 | regardless-of-stock | Dec 11, 2025 | Active |
-| With ends | 1 | regardless-of-stock | Aug 14, 2025 | Active |
+```
