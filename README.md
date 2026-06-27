@@ -43,7 +43,7 @@ A full-stack preorder management application built with Next.js 16, Prisma, and 
 ### Setup
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Israq/Preorder_Manager.git
 cd preorder-manager
 npm install
 npx prisma migrate dev --name init
